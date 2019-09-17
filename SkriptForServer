@@ -73,3 +73,22 @@ command /upgrade:
 					send "&7You do not have enough coins!"
 		else:
 			send "&cYou must be holding a diamond pickaxe!"
+
+command /rename [<text>]:
+	trigger:
+		if player is holding diamond pickaxe:
+			if arg 1 is set:
+				set {pickaxe.name::%player's uuid%} to colored arg 1
+				send " "
+				send "&7You have successfully renamed your pickaxe to %colored arg 1%"
+				send " "
+			else:
+				send " "
+				send "&c/rename <name>"
+				send " "
+				send "&cMust be holding diamond pickaxe!"
+				send " "
+		else:
+			send " "
+			send "&cPlease hold a diamond pickaxe while using this command!"
+			send " "
