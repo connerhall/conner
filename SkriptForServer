@@ -37,6 +37,8 @@ command /upgrade:
 					evaluate "%player's held item's efficiency level + 1%"
 				else:
 					send "&7You do not have enough coins!"
+					
+					
 		else:
 			send "&cYou must be holding a diamond pickaxe!"
 
@@ -68,3 +70,55 @@ command /help:
 		send " &3/rename: &7renames your pickaxe."
 		send " &3/start: &7gives you the starter pickaxe."
 		send " "
+
+on command "spawn":
+	if {CombatL::%player's uuid%} is true:
+		cancel event
+		send "&cYou cannot do that command while in combat!"
+	else:
+		stop
+		
+command /spawn:
+	trigger:
+		teleport player to {spawn}
+		send " "
+		send " &7You have teleported to spawn."
+		send " "
+		
+command /setspawn:
+	permission: setspawn.all
+	permission message: &cInsufficient Permissions.
+	trigger:
+		set {spawn} to player's location
+		send " "
+		send "&7You have set the server's spawn"
+		send " "
+		
+command /broadcast <text>:
+	permission: basics.staff
+	permission message: &fUnkown Command type "/help" for help
+	trigger:
+		send "&cUse /alert!"
+		
+command /bc <text>:
+	permission: basics.staff
+	permission message: &fUnkown Command type "/help" for help
+	trigger:
+		send "&cUse /alert!"
+		
+command /alert <text>:
+	permission: basics.staff
+	permission message: &fUnkown Command type "/help" for help
+	trigger:
+		if arg 1 is set:
+			broadcast "&7(&c!&7) &c%colored arg 1%"
+		else:
+			send "&cUse /alert <text>"
+			
+command /clearchat:
+	permission: basics.staff
+	permission message: &fUnkown Command type "/help" for help
+	trigger:
+		loop 100 times:
+			broadcast " "
+		broadcast "&cChat was cleared by &4%player%"
