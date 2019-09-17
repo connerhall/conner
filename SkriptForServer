@@ -31,3 +31,45 @@ command /shop:
 					send "&7You have successfully purchased 16 Glowstone for &a$100&7!"
 				else:
 					send "&7Insufficient Funds"
+					
+on item damage:
+	cancel event
+
+command /start:
+	trigger:
+		play raw sound "entity.lightning.impact" at player with pitch 1 volume 10
+		send title "&bWelcome to &3Extrava Prisons&b!" to player for 3 seconds
+		give player diamond pickaxe named "&bDiamond Pickaxe"
+		set {evolve.pickaxe.name::%player's uuid%} to false
+		
+every second:
+	loop all players:
+		if {evolve.pickaxe.name::%loop-player's uuid%} is false:
+			set {evolve.pickaxe.name::%loop-player's uuid%} to "&bDiamond Pickaxe"
+		if loop-player's tool is diamond pickaxe:
+			set {_pick::%loop-player's uuid%} to display name of loop-player's tool
+			if {_pick::%loop-player's uuid%} is not set:
+				enchant loop-player's tool with efficiency 1
+				enchant loop-player's tool with fortune 1
+				set name of loop-player's tool to "&b%{pickaxe.name::%loop-player's uuid%}% &8[&7%{blocks.mined::%loop-player's uuid%}%&8]"
+				set line 1 of lore of loop-player's tool to "&7Explosive %{e.explosive::%loop-player's uuid%}%"
+				set line 2 of lore of loop-player's tool to "&7Token Finder %{e.tokens::%loop-player's uuid%}%"
+				set line 3 of lore of loop-player's tool to "&7Autosell %{e.autosell::%loop-player's uuid%}%"
+				set line 4 of lore of loop-player's tool to "&7Luckyblock %{e.luckyblock::%loop-player's uuid%}%"
+				set line 5 of lore of loop-player's tool to "&7Ice %{e.ice::%loop-player's uuid%}%"
+				set line 6 of lore of loop-player's tool to "&7Thor %{e.thor::%loop-player's uuid%}%"
+				set line 7 of lore of loop-player's tool to "&7Laser %{e.laser::%loop-player's uuid%}%"
+				set line 8 of lore of loop-player's tool to "&7Cratefinder %{e.cratefinder::%loop-player's uuid%}%"
+				
+command /upgrade:
+	trigger:
+		if player is holding diamond pickaxe:
+			open virtual chest inventory with size 3 named "&3Upgrades" to player
+			format gui slot 10 of player with enchanted book named "&aEfficiency" with lore "&7Price: &a100 Coins" to run:
+				if {Coins::%player's uuid%} is greater than or equal to 100:
+					remove 100 from {Coins::%player's uuid%}
+					evaluate "%player's held item's efficiency level + 1%"
+				else:
+					send "&7You do not have enough coins!"
+		else:
+			send "&cYou must be holding a diamond pickaxe!"
