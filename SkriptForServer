@@ -59,3 +59,12 @@ command /rename [<text>]:
 			send " "
 			send "&cPlease hold a diamond pickaxe while using this command!"
 			send " "
+
+command /help:
+	trigger:
+		send ""
+		send " &7Help"
+		send ""
+		send " &3/rename: &7renames your pickaxe."
+		send " &3/start: &7gives you the starter pickaxe."
+		send " "
